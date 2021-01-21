@@ -4,7 +4,7 @@ import Carousel from "react-multi-carousel";
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 2,
+    items: 4,
     paritialVisibilityGutter: 60
   },
   tablet: {
@@ -14,7 +14,7 @@ const responsive = {
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
-    items: 1,
+    items: 2,
     paritialVisibilityGutter: 30
   }
 };
@@ -36,28 +36,25 @@ const images = [
 // Because this is an inframe, so the SSR mode doesn't not do well here.
 // It will work on real devices.
 const Simple = ({ deviceType }) => {
-
   return (
     <Carousel
       ssr
-      partialVisbile
+      showArrows={true}
       deviceType={deviceType}
-      itemClass="image-item"
       responsive={responsive}
+      itemClass="image-item"
       autoPlay={true}
       autoPlaySpeed={2000}
       infinite={true}
     >
-      {images.slice(0, 5).map((image,index) => {
-        
+      {images.map((image, index) => {
         return (
-          <img           
+          <img
+            key={index}
             draggable={true}
             style={{ width: "100%", height: "100%" }}
-            src={image}
-            key={index}
-          />
-        );
+            src={image} />
+        )
       })}
     </Carousel>
   );
