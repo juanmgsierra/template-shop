@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import Carousel from "react-multi-carousel";
-import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles';;
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 3),
   },
   paper: {
-    maxWidth: 1080,
+    maxWidth: 800,
     margin: `${theme.spacing(1)}px auto`,
     padding: theme.spacing(2),
   },
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 5,
+    items: 4,
     paritialVisibilityGutter: 60,
   },
   tablet: {
@@ -55,6 +55,7 @@ const Simple = ({ deviceType }) => {
           <Grid item xs={12}>
             <Carousel
               ssr
+              arrows={false}
               useKeyboardArrows
               deviceType={deviceType}
               responsive={responsive}
@@ -65,13 +66,14 @@ const Simple = ({ deviceType }) => {
             >
               {images.map((image, index) => {
                 return (
-                  <img
+                  <img                
                     key={index}
                     draggable={false}
-                    style={{ width: "100%", height: "100%" }}
+                     style={{ width: "100%", height: "100%" }}
                     src={image} />
                 )
               })}
+             
             </Carousel>
           </Grid>
         </Grid>
