@@ -34,6 +34,7 @@ const responsive = {
   }
 };
 const images = [
+  "https://firebasestorage.googleapis.com/v0/b/e-commerce-7e1b8.appspot.com/o/images%2Fbanners%2Fapple-devices-800x702.jpg?alt=media&token=038ae9f5-64f1-472e-a789-45a8c8d03a5b",
   "/Mac-Pro.jpeg",
   "/watch.jpg",
   "/chromecast.jpg",
