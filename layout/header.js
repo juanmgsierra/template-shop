@@ -12,7 +12,7 @@ import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: "#4d607d",
+        //backgroundColor: "#4d607d",
         position: "static"
     },
     grow: {
