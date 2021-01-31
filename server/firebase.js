@@ -12,9 +12,23 @@ const firebaseConfig = {
     measurementId: "G-ZE55B800Q4"
 };
 
-app.initializeApp(firebaseConfig);
+app.apps.length === 0 &&
+    app.initializeApp(firebaseConfig);
+
 
 export const loginWithGoogle = () => {
     const googleProvider = new app.auth.GoogleAuthProvider();
-    return app.auth().signInWithPopup(googleProvider);
+    return app.auth().signInWithPopup(googleProvider).then(data => {
+        console.log(data);
+        const { displayName, email, photoURL } = data.user;
+        return { displayName, email, photoURL }
+    });
+}
+
+export const logOut = () => {
+    return app.auth().signOut().then(() => {
+        console.log("logout successful")
+      }).catch((err) => {
+        console.log(err)
+      });
 }
