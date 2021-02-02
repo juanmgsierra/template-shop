@@ -27,6 +27,7 @@ AboutPage.getInitialProps = ({ req }) => {
   const parser = new UAParser();
   parser.setUA(userAgent);
   const result = parser.getResult();
+  console.log(result.device)
   const deviceType = (result.device && result.device.type) || "desktop";
   return { deviceType };
 };

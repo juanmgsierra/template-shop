@@ -8,10 +8,11 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        backgroundColor: "#4d607d",
+        //backgroundColor: "#4d607d",
         position: "static"
     },
     grow: {
@@ -57,7 +58,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
+
 const Header = () => {
+    const router = useRouter();
     const classes = useStyles();
     return (
         <div className={classes.grow}>
@@ -67,6 +70,7 @@ const Header = () => {
                         edge="start"
                         color="inherit"
                         aria-label="open drawer"
+                        onClick={()=>router.push("/")}
                     >
                         <Typography variant="button" >
                             P Store

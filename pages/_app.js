@@ -4,6 +4,8 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
+import { Provider } from 'react-redux';
+import store from '../src/store';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -25,11 +27,13 @@ export default function MyApp(props) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
+      <Provider store={store}>
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
+      </Provider>
     </React.Fragment>
   );
 }
