@@ -1,8 +1,8 @@
 import { all } from 'redux-saga/effects';
-import { rootLog } from './log';
+import { rootSession } from './session';
 
 export default function* rootSaga() {
     yield all([
-        rootLog()
+        rootSession()
     ]);
 }

@@ -1,16 +1,15 @@
-import { put, call } from 'redux-saga/effects';
+import { takeEvery, put, call } from 'redux-saga/effects';
 import { loginWithGoogle, logOut } from "../../server/firebase"
-
 import { 
     LOGIN_REQUEST,
     LOGOUT,
     LOGIN_SUCCESS,
     LOGIN_ERROR
- }  from '../constants/action-types';
+ }  from '../constants/actions-types';
 
 function* login(){
     try {
-        yield put({ type: LOGIN_REQUEST });
+        //yield put({ type: LOGIN_REQUEST });
         const data = yield call(loginWithGoogle)
         yield put({type:LOGIN_SUCCESS, data})
         
@@ -19,17 +18,22 @@ function* login(){
     }
 } 
 
-function* logOut(){
+function* logOutSession(){
     try {
         yield call(logOut);
-        yield put({type:LOGOUT})
+        //yield put({type:LOGOUT})
     } catch (error) {
         yield put({ type: LOGIN_ERROR, error });
     }
 }
 
+/*
 export default function * rootLog () {
     yield fork(login)
-    yield fork(logOut)
-}
+    yield fork(logOutSession)
+}*/
   
+export function* rootSession() {
+    yield takeEvery(LOGIN_REQUEST, login);
+    yield takeEvery(LOGOUT, logOutSession);
+}

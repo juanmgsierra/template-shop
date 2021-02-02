@@ -3,32 +3,26 @@ import Header from "../layout/header";
 import { loginWithGoogle, onAuthStateChange, logOut } from "../server/firebase"
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { LOGIN_REQUEST } from '../src/constants/actions-types'
+import { LOGIN_REQUEST, LOGOUT } from '../src/constants/actions-types'
 
 export default function login() {
-    const [user,setUser] =useState(null);
+    const [users,setUser] =useState(null);
     const dispatch = useDispatch();
 
-    const handleClick = () => {
+    const  { user }  = useSelector(state => state.session);
 
-        dispatch({type: LOGIN_REQUEST})
-       /* loginWithGoogle().then(user => setUser(user))
-        .catch(err => {
-            console.log(err)
-        }) */
-    }
     return(
         <div>
             <Header />
-            { user === null && 
-                <Button variant="contained" color="primary" onClick={handleClick}>                
+            { !user.displayName  && 
+                <Button variant="contained" color="primary" onClick={()=>dispatch({type: LOGIN_REQUEST}) }>                
                     Login con Google            
                 </Button>               
             }
             {
               user && user.email && <div>
                 <strong>{user.displayName}</strong>
-                <Button variant="contained" color="primary" onClick={logOut}>                
+                <Button variant="contained" color="primary" onClick={()=>dispatch({type: LOGOUT})}>                
                     Logout            
                 </Button>
               </div>

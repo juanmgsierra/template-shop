@@ -18,8 +18,7 @@ app.apps.length === 0 &&
 
 export const loginWithGoogle = () => {
     const googleProvider = new app.auth.GoogleAuthProvider();
-    return app.auth().signInWithPopup(googleProvider).then(data => {
-        console.log(data);
+    return app.auth().signInWithPopup(googleProvider).then(data => {        
         const { displayName, email, photoURL } = data.user;
         return { displayName, email, photoURL }
     });
@@ -27,7 +26,7 @@ export const loginWithGoogle = () => {
 
 export const logOut = () => {
     return app.auth().signOut().then(() => {
-        console.log("logout successful")
+        
       }).catch((err) => {
         console.log(err)
       });
