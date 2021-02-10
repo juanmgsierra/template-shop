@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
 import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGOUT } from '../src/constants/actions-types'
-
+import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -33,11 +33,36 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const initialState = {
+    email: "",
+    password: ""
+}
+
 export default function login() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    const [usuario, setUsuario] = useState(initialState)
+
     const { user } = useSelector(state => state.session);
+
+    const onChange = e => {
+        const { name, value } = e.target;
+        setUsuario((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+ 
+    const login = async (e) => {
+        e.preventDefault();        
+        const { email, password } = usuario;
+        if (!email || !password) {
+            return alert("Ingrese sus credenciales");
+        }       
+    }
+
     return (
         <div>
             <Header />
@@ -57,9 +82,10 @@ export default function login() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
                             label="Dirección de correo"
                             name="email"
+                            value={usuario.email}
+                            onChange={onChange}
                             autoComplete="email"
                             autoFocus
                         />
@@ -71,26 +97,28 @@ export default function login() {
                             name="password"
                             label="Clave"
                             type="password"
-                            id="password"
+                            value={usuario.password}
                             autoComplete="current-password"
+                            onChange={onChange}
                         />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
+                            onClick={login}
                             className={classes.submit}
                         >
                             Ingresar
                         </Button>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
-                                <Button variant="contained" color="primary"  fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE })}>
+                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE })}>
                                     Login con Google
                                 </Button>
                             </Grid>
                             <Grid item xs={12} sm={6} >
-                                <Button variant="contained" color="primary"  fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK })}>
+                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK })}>
                                     Login con Facebook
                                 </Button>
                             </Grid>
