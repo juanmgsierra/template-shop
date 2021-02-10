@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
-import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGOUT } from '../src/constants/actions-types'
+import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGOUT, LOGIN_REQUEST } from '../src/constants/actions-types'
 import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -60,7 +60,8 @@ export default function login() {
         const { email, password } = usuario;
         if (!email || !password) {
             return alert("Ingrese sus credenciales");
-        }       
+        }   
+        dispatch({ type: LOGIN_REQUEST, usuario })    
     }
 
     return (
@@ -113,12 +114,12 @@ export default function login() {
                         </Button>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE })}>
+                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider:"google"})}>
                                     Login con Google
                                 </Button>
                             </Grid>
                             <Grid item xs={12} sm={6} >
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK })}>
+                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider:"facebook" })}>
                                     Login con Facebook
                                 </Button>
                             </Grid>

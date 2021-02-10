@@ -16,10 +16,21 @@ app.apps.length === 0 &&
     app.initializeApp(firebaseConfig);
 
 
-export const loginWithProvider = (typeProvider) => {  
-    if(typeProvider == 'google'){  
+export const loginWithEmail = (user) => {
+    return new Promise((resolve, reject) => {
+        app.auth().signInWithEmailAndPassword(user.email, user.password).then((data) => {
+            const { displayName, email, photoURL } = data.user;
+            resolve({ displayName, email, photoURL })
+        }).catch(err =>
+            reject(err))
+    })
+}
+
+
+export const loginWithProvider = (typeProvider) => {
+    if (typeProvider == 'google') {
         var Provider = new app.auth.GoogleAuthProvider();
-    }else{
+    } else {
         Provider = new app.auth.FacebookAuthProvider();
     }
     return app.auth().signInWithPopup(Provider).then(data => {
