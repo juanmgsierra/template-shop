@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -19,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        margin: `${theme.spacing(2)}px auto`,
+        padding: theme.spacing(3),
     },
     avatar: {
         margin: theme.spacing(1),
@@ -26,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     form: {
         width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
+        marginTop: theme.spacing(2),
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
@@ -54,14 +57,14 @@ export default function login() {
         }));
     };
 
- 
+
     const login = async (e) => {
-        e.preventDefault();        
+        e.preventDefault();
         const { email, password } = usuario;
         if (!email || !password) {
             return alert("Ingrese sus credenciales");
-        }   
-        dispatch({ type: LOGIN_REQUEST, usuario })    
+        }
+        dispatch({ type: LOGIN_REQUEST, usuario })
     }
 
     return (
@@ -70,7 +73,7 @@ export default function login() {
 
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
-                <div className={classes.paper}>
+                <Paper className={classes.paper}>
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
@@ -114,13 +117,13 @@ export default function login() {
                         </Button>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={6}>
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider:"google"})}>
-                                    Login con Google
+                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider: "google" })}>
+                                    Login Google
                                 </Button>
                             </Grid>
                             <Grid item xs={12} sm={6} >
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider:"facebook" })}>
-                                    Login con Facebook
+                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider: "facebook" })}>
+                                    Login Facebook
                                 </Button>
                             </Grid>
                         </Grid>
@@ -137,8 +140,9 @@ export default function login() {
                             </Grid>
                         </Grid>
                     </form>
-                </div>
+                </Paper>
             </Container>
+
             { !user.displayName &&
                 <>
 
