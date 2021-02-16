@@ -1,13 +1,11 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGOUT, LOGIN_REQUEST } from '../src/constants/actions-types'
 import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from 'next/link';
-import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
 
 const initialState = {
     email: "",
-    password: ""
+    password: "",
+    repassword:""
 }
 
 export default function login() {
@@ -46,8 +45,6 @@ export default function login() {
     const dispatch = useDispatch();
 
     const [usuario, setUsuario] = useState(initialState)
-
-    const { user } = useSelector(state => state.session);
 
     const onChange = e => {
         const { name, value } = e.target;
@@ -58,13 +55,18 @@ export default function login() {
     };
 
 
-    const login = async (e) => {
+    const register = async (e) => {
         e.preventDefault();
-        const { email, password } = usuario;
+        const { email, password, repassword } = usuario;
         if (!email || !password) {
-            return alert("Ingrese sus credenciales");
+            return alert("No deje campos en blanco");
         }
-        dispatch({ type: LOGIN_REQUEST, usuario })
+
+        if(password != repassword){
+            return alert("La clave es distinta");
+        }
+
+        //dispatch({ type: LOGIN_REQUEST, usuario })
     }
 
     return (
@@ -78,7 +80,7 @@ export default function login() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Iniciar Sesión
+                        Registrate
                     </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
@@ -105,58 +107,31 @@ export default function login() {
                             autoComplete="current-password"
                             onChange={onChange}
                         />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="repassword"
+                            label="Repetir Clave"
+                            type="password"
+                            value={usuario.repassword}
+                            autoComplete="current-password"
+                            onChange={onChange}
+                        />
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
-                            onClick={login}
+                            onClick={register}
                             className={classes.submit}
                         >
-                            Ingresar
-                        </Button>
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} sm={6}>
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider: "google" })}>
-                                    Login Google
-                                </Button>
-                            </Grid>
-                            <Grid item xs={12} sm={6} >
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider: "facebook" })}>
-                                    Login Facebook
-                                </Button>
-                            </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Olvidaste tu clave?
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="/register" variant="body2">
-                                    {"No tienes cuenta? Registrate"}
-                                </Link>
-                            </Grid>
-                        </Grid>
+                            Registrarse
+                        </Button>                                      
                     </form>
                 </Paper>
             </Container>
-
-            { !user.displayName &&
-                <>
-
-
-                </>
-            }
-            {
-                user && user.email && <div>
-                    <strong>{user.displayName}</strong>
-                    <Button variant="contained" color="primary" onClick={() => dispatch({ type: LOGOUT })}>
-                        Logout
-                </Button>
-                </div>
-            }
         </div>
     )
 }
