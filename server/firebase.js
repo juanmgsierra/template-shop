@@ -16,9 +16,24 @@ app.apps.length === 0 &&
     app.initializeApp(firebaseConfig);
 
 
-export const loginWithGoogle = () => {
-    const googleProvider = new app.auth.GoogleAuthProvider();
-    return app.auth().signInWithPopup(googleProvider).then(data => {        
+export const loginWithEmail = (user) => {
+    return new Promise((resolve, reject) => {
+        app.auth().signInWithEmailAndPassword(user.email, user.password).then((data) => {
+            const { displayName, email, photoURL } = data.user;
+            resolve({ displayName, email, photoURL })
+        }).catch(err =>
+            reject(err))
+    })
+}
+
+
+export const loginWithProvider = (typeProvider) => {
+    if (typeProvider == 'google') {
+        var Provider = new app.auth.GoogleAuthProvider();
+    } else {
+        Provider = new app.auth.FacebookAuthProvider();
+    }
+    return app.auth().signInWithPopup(Provider).then(data => {
         const { displayName, email, photoURL } = data.user;
         return { displayName, email, photoURL }
     });
@@ -26,8 +41,8 @@ export const loginWithGoogle = () => {
 
 export const logOut = () => {
     return app.auth().signOut().then(() => {
-        
-      }).catch((err) => {
+
+    }).catch((err) => {
         console.log(err)
-      });
+    });
 }

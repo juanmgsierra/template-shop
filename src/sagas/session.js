@@ -1,39 +1,46 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { loginWithGoogle, logOut } from "../../server/firebase"
-import { 
-    LOGIN_REQUEST,
+import { loginWithProvider, loginWithEmail, logOut } from "../../server/firebase"
+import {
+    LOGIN_REQUEST_GOOGLE,
+    LOGIN_REQUEST_FACEBOOK,
     LOGOUT,
     LOGIN_SUCCESS,
-    LOGIN_ERROR
- }  from '../constants/actions-types';
+    LOGIN_ERROR,
+    LOGIN_REQUEST
+} from '../constants/actions-types';
 
-function* login(){
+
+function* login(action) {
     try {
-        //yield put({ type: LOGIN_REQUEST });
-        const data = yield call(loginWithGoogle)
-        yield put({type:LOGIN_SUCCESS, data})
-        
-    } catch (error) {        
+        const data = yield call(loginWithEmail,action.usuario)
+        yield put({ type: LOGIN_SUCCESS, data })
+    }catch(error){
         yield put({ type: LOGIN_ERROR, error });
     }
-} 
+}
 
-function* logOutSession(){
+function* loginBtn(action) {
     try {
-        yield call(logOut);
-        //yield put({type:LOGOUT})
+        const data = yield call(loginWithProvider, action.provider)
+        yield put({ type: LOGIN_SUCCESS, data })
+
     } catch (error) {
         yield put({ type: LOGIN_ERROR, error });
     }
 }
 
-/*
-export default function * rootLog () {
-    yield fork(login)
-    yield fork(logOutSession)
-}*/
-  
+function* logOutSession() {
+    try {
+        yield call(logOut);
+    } catch (error) {
+        yield put({ type: LOGIN_ERROR, error });
+    }
+}
+
+
 export function* rootSession() {
     yield takeEvery(LOGIN_REQUEST, login);
+    yield takeEvery(LOGIN_REQUEST_GOOGLE, loginBtn);
+    yield takeEvery(LOGIN_REQUEST_FACEBOOK, loginBtn);
     yield takeEvery(LOGOUT, logOutSession);
 }
