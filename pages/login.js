@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
-import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGOUT, LOGIN_REQUEST } from '../src/constants/actions-types'
+import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST } from '../src/constants/actions-types'
 import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import { useRouter } from 'next/router'
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -44,10 +46,17 @@ const initialState = {
 export default function login() {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const router  = useRouter();
 
     const [usuario, setUsuario] = useState(initialState)
 
     const { user } = useSelector(state => state.session);
+
+    if(user.email){
+        console.log(user);
+   
+        router.push("/")
+    }
 
     const onChange = e => {
         const { name, value } = e.target;
@@ -129,7 +138,7 @@ export default function login() {
                         </Grid>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
+                                <Link href="/login" variant="body2">
                                     Olvidaste tu clave?
                                 </Link>
                             </Grid>
@@ -141,22 +150,7 @@ export default function login() {
                         </Grid>
                     </form>
                 </Paper>
-            </Container>
-
-            { !user.displayName &&
-                <>
-
-
-                </>
-            }
-            {
-                user && user.email && <div>
-                    <strong>{user.displayName}</strong>
-                    <Button variant="contained" color="primary" onClick={() => dispatch({ type: LOGOUT })}>
-                        Logout
-                </Button>
-                </div>
-            }
+            </Container>         
         </div>
     )
 }

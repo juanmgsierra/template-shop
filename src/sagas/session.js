@@ -1,12 +1,14 @@
+import { CalendarToday } from '@material-ui/icons';
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { loginWithProvider, loginWithEmail, logOut } from "../../server/firebase"
+import { loginWithProvider, loginWithEmail, registerWithEmail, logOut } from "../../server/firebase"
 import {
     LOGIN_REQUEST_GOOGLE,
     LOGIN_REQUEST_FACEBOOK,
     LOGOUT,
     LOGIN_SUCCESS,
     LOGIN_ERROR,
-    LOGIN_REQUEST
+    LOGIN_REQUEST,
+    REGISTER_REQUEST
 } from '../constants/actions-types';
 
 
@@ -37,10 +39,20 @@ function* logOutSession() {
     }
 }
 
+function* register(action){
+    try {
+        const data = yield call(registerWithEmail, action.usuario)
+        yield put({ type: LOGIN_SUCCESS, data })
+
+    } catch (error) {
+        yield put({type:LOGIN_ERROR, error})
+    }
+}
 
 export function* rootSession() {
     yield takeEvery(LOGIN_REQUEST, login);
     yield takeEvery(LOGIN_REQUEST_GOOGLE, loginBtn);
     yield takeEvery(LOGIN_REQUEST_FACEBOOK, loginBtn);
+    yield takeEvery(REGISTER_REQUEST,register)
     yield takeEvery(LOGOUT, logOutSession);
 }

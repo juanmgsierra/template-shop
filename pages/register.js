@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useDispatch } from 'react-redux';
-import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGOUT, LOGIN_REQUEST } from '../src/constants/actions-types'
+import { REGISTER_REQUEST } from '../src/constants/actions-types'
 import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -66,7 +66,7 @@ export default function login() {
             return alert("La clave es distinta");
         }
 
-        //dispatch({ type: LOGIN_REQUEST, usuario })
+        dispatch({ type: REGISTER_REQUEST, usuario })
     }
 
     return (

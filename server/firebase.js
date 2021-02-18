@@ -39,6 +39,25 @@ export const loginWithProvider = (typeProvider) => {
     });
 }
 
+export const registerWithEmail = (user) =>{
+    return new Promise((resolve,reject)=>{
+        app.auth().createUserWithEmailAndPassword(user.email,user.password).then((auth) => {
+            var id = auth.user.uid            
+            app.firestore().collection("Usuarios").doc(id).set({
+                id: id,
+                email: auth.user.email,
+                logTime: Date.now()
+            }, { merge: true }).then(() => {
+                app.firestore().collection("Usuarios").doc(id).get().then(doc => {                    
+                    resolve(doc.data());                   
+                })
+            })
+        }).catch((error) => {
+            reject(error)
+        })
+    })
+}
+
 export const logOut = () => {
     return app.auth().signOut().then(() => {
 
