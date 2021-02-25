@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import { useRouter } from 'next/router'
+import Skelleton from '@material-ui/lab/Skeleton';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,15 +47,13 @@ const initialState = {
 export default function login() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const router  = useRouter();
+    const router = useRouter();
 
     const [usuario, setUsuario] = useState(initialState)
 
-    const { user } = useSelector(state => state.session);
+    const { user, fetching } = useSelector(state => state.session);
 
-    if(user.email){
-        console.log(user);
-   
+    if (user.email) {
         router.push("/")
     }
 
@@ -89,68 +88,87 @@ export default function login() {
                     <Typography component="h1" variant="h5">
                         Iniciar Sesión
                     </Typography>
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Dirección de correo"
-                            name="email"
-                            value={usuario.email}
-                            onChange={onChange}
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Clave"
-                            type="password"
-                            value={usuario.password}
-                            autoComplete="current-password"
-                            onChange={onChange}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={login}
-                            className={classes.submit}
-                        >
-                            Ingresar
+                    {!fetching ? (
+                        <form className={classes.form} noValidate>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Dirección de correo"
+                                name="email"
+                                value={usuario.email}
+                                onChange={onChange}
+                                autoComplete="email"
+                                autoFocus
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Clave"
+                                type="password"
+                                value={usuario.password}
+                                autoComplete="current-password"
+                                onChange={onChange}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={login}
+                                className={classes.submit}
+                            >
+                                Ingresar
                         </Button>
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} sm={6}>
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider: "google" })}>
-                                    Login Google
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} sm={6}>
+                                    <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider: "google" })}>
+                                        Login Google
                                 </Button>
-                            </Grid>
-                            <Grid item xs={12} sm={6} >
-                                <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider: "facebook" })}>
-                                    Login Facebook
+                                </Grid>
+                                <Grid item xs={12} sm={6} >
+                                    <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider: "facebook" })}>
+                                        Login Facebook
                                 </Button>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="/login" variant="body2">
-                                    Olvidaste tu clave?
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="/login" variant="body2">
+                                        Olvidaste tu clave?
                                 </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link href="/register" variant="body2">
+                                        {"No tienes cuenta? Registrate"}
+                                    </Link>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <Link href="/register" variant="body2">
-                                    {"No tienes cuenta? Registrate"}
-                                </Link>
+                        </form>
+                    ) :
+                        (<>
+                            <br />
+                            <Skelleton width="100%" height={80} />
+                            <Skelleton width="100%" height={80} />
+                            <br />
+                            <Skelleton width="100%" height={70} />
+                            <br/>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12} sm={6}>
+                                    <Skelleton height={70} />
+                                </Grid>
+                                <Grid item xs={12} sm={6} >
+                                    <Skelleton height={70} />
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
+                        </>)}
                 </Paper>
-            </Container>         
+
+            </Container>
         </div>
     )
 }
