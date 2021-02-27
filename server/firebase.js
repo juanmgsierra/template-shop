@@ -16,20 +16,10 @@ app.apps.length === 0 &&
     app.initializeApp(firebaseConfig);
 
 
-export const loginWithEmail = (user) => {
+export const loginWithEmail =  (user) => {
     return new Promise((resolve, reject) => {
-        app.auth().signInWithEmailAndPassword(user.email, user.password).then((data) => {
-            const id = data.user.uid;
-            app.firestore().collection("Usuarios").doc(id).set({
-                id: id,
-                email: data.user.email,
-                logTime: Date.now()
-            }, { merge: true }).then(() => {
-                app.firestore().collection("Usuarios").doc(id).get().then(doc => {
-                    const usuarioDB = doc.data();
-                    resolve(usuarioDB)
-                })
-            })
+        app.auth().signInWithEmailAndPassword(user.email, user.password).then(data => {           
+            resolve(sesionLog(data));            
         }).catch(err =>
             reject(err))
     })
@@ -45,16 +35,7 @@ export const loginWithProvider = (typeProvider) => {
 
     return new Promise((resolve, reject) => {
         app.auth().signInWithPopup(Provider).then(data => {
-            const id = data.user.uid;
-            app.firestore().collection("Usuarios").doc(id).set({
-                id: id,
-                email: data.user.email,
-                logTime: Date.now()
-            }, { merge: true }).then(() => {
-                app.firestore().collection("Usuarios").doc(id).get().then(doc =>
-                    resolve(doc.data())
-                )
-            })
+            resolve(sesionLog(data));   
         }).catch(err => reject(err))
     })
 }
@@ -62,26 +43,28 @@ export const loginWithProvider = (typeProvider) => {
 export const registerWithEmail = (user) => {
     return new Promise((resolve, reject) => {
         app.auth().createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
-            var id = auth.user.uid
-            app.firestore().collection("Usuarios").doc(id).set({
-                id: id,
-                email: auth.user.email,
-                logTime: Date.now()
-            }, { merge: true }).then(() => {
-                app.firestore().collection("Usuarios").doc(id).get().then(doc => {
-                    resolve(doc.data());
-                })
-            })
+            resolve(sesionLog(auth));   
         }).catch((error) => {
             reject(error)
         })
     })
 }
 
-export const logOut = () => {
-    return app.auth().signOut().then(() => {
+const sesionLog = async (auth) => {
+    const id = auth.user.uid
+    await app.firestore().collection("Usuarios").doc(id).set({
+        id: id,
+        email: auth.user.email,
+        logTime: Date.now()
+    }, { merge: true });
+    const doc = await app.firestore().collection("Usuarios").doc(id).get();
+    return doc.data();
+}
 
-    }).catch((err) => {
-        console.log(err)
-    });
+export const logOut = async () => {
+    try {
+        await app.auth().signOut();
+    } catch (err) {
+        console.log(err);
+    }
 }
