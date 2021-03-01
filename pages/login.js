@@ -53,9 +53,7 @@ export default function login() {
 
     const { user, fetching } = useSelector(state => state.session);
 
-    if (user.email) {
-        router.push("/")
-    }
+    user.id && router.push("/")
 
     const onChange = e => {
         const { name, value } = e.target;

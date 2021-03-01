@@ -1,4 +1,3 @@
-import { CalendarToday } from '@material-ui/icons';
 import { takeEvery, put, call } from 'redux-saga/effects';
 import { loginWithProvider, loginWithEmail, registerWithEmail, logOut } from "../../server/firebase"
 import {
