@@ -1,14 +1,17 @@
+import { useState } from 'react';
 import Header from "../layout/header";
 import { makeStyles } from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import TabPanel from '../components/TabPanel'
-import { useState } from 'react';
+import TabContext from '@material-ui/lab/TabContext';
+import TabList from '@material-ui/lab/TabList';
+import TabPanel from '@material-ui/lab/TabPanel'
 import AppBar from '@material-ui/core/AppBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { SESSION_REQUEST } from '../src/constants/actions-types'
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,15 +35,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const initialState = {
-    email: "",
-    password: ""
-}
-
 export default function Account() {
-    const classes = useStyles();    
+    const classes = useStyles();
     const { user } = useSelector(state => state.session);
-    const [value, setValue] = useState(0);
+    const dispatch = useDispatch();
+    const [value, setValue] = useState("1");
     const [usuario, setUsuario] = useState(user)
 
 
@@ -56,84 +55,88 @@ export default function Account() {
         }));
     };
 
+    const updateProfile = async (e) => {
+        e.preventDefault();
+        const { celular, nombre } = usuario;
+        if (!celular || !nombre) {
+            return alert("Complete los campos");
+        }
+        dispatch({ type: SESSION_REQUEST, usuario })
+    }
+
     return (
         <>
             <Header />
             <div className={classes.root}>
-                <AppBar position="static" color="default">
-                    <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        scrollButtons="auto"
-                        centered
-                        //variant="fullWidth"
-                    >
-                        <Tab label="Cuenta" />
-                        <Tab label="Direcciones" />
-                        <Tab label="Ordenes" />                        
-                    </Tabs>
-                </AppBar>
-                {value === 0 && <TabPanel>
-                    <form className={classes.form} noValidate>
-                        <Grid container spacing={1}>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                label="Nombre completo"
-                                name="email"
-                                value={usuario.nombre}
-                                onChange={onChange}
-                                autoComplete="email"
-                                autoFocus
-                            />
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                label="Correo"
-                                name="email"
-                                value={usuario.email}
-                                disabled
-                                onChange={onChange}
-                                autoComplete="email"                                
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Celular"
-                                type="password"
-                                value={usuario.celular}
-                                autoComplete="current-password"
-                                onChange={onChange}
-                            />
-                        </Grid>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                //onClick={login}
-                                className={classes.submit}
-                            >
-                                Guardar
-                        </Button>
-                        </Grid>
-                    </form>
-                </TabPanel>}
-                {value === 1 && <TabPanel>Item Two</TabPanel>}
-                {value === 2 && <TabPanel>Item Three</TabPanel>}
-
+                <TabContext value={value}>
+                    <AppBar position="static" color="default" >
+                        <TabList onChange={handleChange} aria-label="simple tabs example" centered>
+                            <Tab label="Cuenta" value="1" />
+                            <Tab label="Direcciones" value="2" />
+                            <Tab label="Ordenes" value="3" />
+                        </TabList>
+                    </AppBar>
+                    <TabPanel value="1">
+                        <form className={classes.form} noValidate>
+                            <Grid container spacing={1}>
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    label="Nombre completo"
+                                    name="nombre"
+                                    value={usuario.nombre || ''}
+                                    onChange={onChange}
+                                    autoComplete="nombre"
+                                    autoFocus
+                                />
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        label="Correo"
+                                        name="email"
+                                        value={usuario.email}
+                                        disabled
+                                        onChange={onChange}
+                                        autoComplete="email"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        variant="outlined"
+                                        margin="normal"
+                                        required
+                                        fullWidth
+                                        name="celular"
+                                        label="Celular"
+                                        value={usuario.celular || ''}
+                                        onChange={onChange}
+                                    />
+                                </Grid>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={updateProfile}
+                                    className={classes.submit}
+                                >
+                                    Guardar
+                                </Button>
+                            </Grid>
+                        </form>
+                    </TabPanel>
+                    <TabPanel value="2">
+                        Item Two
+                    </TabPanel>
+                    <TabPanel value="3">
+                        Item Three
+                    </TabPanel>
+                </TabContext>
             </div>
         </>
     );
