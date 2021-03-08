@@ -10,22 +10,26 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { useSelector, useDispatch } from 'react-redux';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 import { SESSION_REQUEST } from '../src/constants/actions-types'
 
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        //flexGrow: 1,
         width: '100%',
         backgroundColor: theme.palette.background.paper,
-        height: 600,
+        //height: 600,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
     },
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
-    },
+    },    
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(2),
@@ -33,6 +37,14 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    card: {
+        minWidth: 200,
+        display: 'flex',
+    },
+    gridContainer: {
+        paddingLeft: "40px",
+        paddingRight: "40px"
+      }
 }));
 
 export default function Account() {
@@ -42,7 +54,7 @@ export default function Account() {
     const [value, setValue] = useState("1");
     const [usuario, setUsuario] = useState(user)
 
-
+    const array = [1, 2, 3];
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -75,8 +87,8 @@ export default function Account() {
                             <Tab label="Direcciones" value="2" />
                             <Tab label="Ordenes" value="3" />
                         </TabList>
-                    </AppBar>
-                    <TabPanel value="1">
+                    </AppBar>                   
+                    <TabPanel value="1">                         
                         <form className={classes.form} noValidate>
                             <Grid container spacing={1}>
                                 <TextField
@@ -128,10 +140,62 @@ export default function Account() {
                                     Guardar
                                 </Button>
                             </Grid>
-                        </form>
+                        </form>                  
                     </TabPanel>
                     <TabPanel value="2">
-                        Item Two
+                        <Grid
+                            container
+                            spacing={4}
+                            className={classes.gridContainer}
+                            justify="center"
+                        >
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card className={classes.card} >
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Word of the Day
+                                    </Typography>
+                                        <Typography variant="h5" component="h2">
+                                            asdd
+                                    </Typography>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            adjective
+                                    </Typography>
+                                        <Typography variant="body2" component="p">
+                                            well meaning and kindly.
+                                    <br />
+                                            {'"a benevolent smile"'}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small">Learn More</Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card className={classes.card} >
+                                    <CardContent>
+                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                            Word of the Day
+                                    </Typography>
+                                        <Typography variant="h5" component="h2">
+                                            asdd
+                                    </Typography>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            adjective
+                                    </Typography>
+                                        <Typography variant="body2" component="p">
+                                            well meaning and kindly.
+                                    <br />
+                                            {'"a benevolent smile"'}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button size="small">Learn More</Button>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        </Grid>
                     </TabPanel>
                     <TabPanel value="3">
                         Item Three
