@@ -18,7 +18,7 @@ import {
 function* login(action) {
     try {
         const data = yield call(loginWithEmail,action.usuario)
-        yield put({ type: LOGIN_SUCCESS, data })
+        yield put({ type: LOGIN_SUCCESS, data });
     }catch(error){
         yield put({ type: LOGIN_ERROR, error });
     }
@@ -27,7 +27,7 @@ function* login(action) {
 function* loginBtn(action) {
     try {
         const data = yield call(loginWithProvider, action.provider)
-        yield put({ type: LOGIN_SUCCESS, data })
+        yield put({ type: LOGIN_SUCCESS, data });
 
     } catch (error) {
         yield put({ type: LOGIN_ERROR, error });
@@ -44,20 +44,20 @@ function* logOutSession() {
 
 function* register(action){
     try {
-        const data = yield call(registerWithEmail, action.usuario)
-        yield put({ type: LOGIN_SUCCESS, data })
+        const data = yield call(registerWithEmail, action.usuario);
+        yield put({ type: LOGIN_SUCCESS, data });
 
     } catch (error) {
-        yield put({type:LOGIN_ERROR, error})
+        yield put({type:LOGIN_ERROR, error});
     }
 }
 
 function* updateSesion(action){
     try {        
-        const data = yield call(editarPerfil, action.usuario)
-        yield put({type:SESSION_SUCCESS, data})
+        const data = yield call(editarPerfil, action.usuario);
+        yield put({type:SESSION_SUCCESS, data});
     } catch (error) {
-        yield put({type:SESSION_ERROR, error})
+        yield put({type:SESSION_ERROR, error});
     }
 }
 
@@ -65,7 +65,7 @@ export function* rootSession() {
     yield takeEvery(LOGIN_REQUEST, login);
     yield takeEvery(LOGIN_REQUEST_GOOGLE, loginBtn);
     yield takeEvery(LOGIN_REQUEST_FACEBOOK, loginBtn);
-    yield takeEvery(REGISTER_REQUEST,register)
+    yield takeEvery(REGISTER_REQUEST,register);
     yield takeEvery(LOGOUT, logOutSession);
-    yield takeEvery(SESSION_REQUEST,updateSesion)
+    yield takeEvery(SESSION_REQUEST,updateSesion);
 }

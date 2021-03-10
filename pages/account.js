@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from "../layout/header";
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { AppBar, TextField, Button, Grid, Card, CardActions, CardContent, makeStyles, Typography, Tab } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { SESSION_REQUEST } from '../src/constants/actions-types'
+import { SESSION_REQUEST, ADDRESS_REQUEST } from '../src/constants/actions-types'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,11 +36,20 @@ const useStyles = makeStyles((theme) => ({
 export default function Account() {
     const classes = useStyles();
     const { user } = useSelector(state => state.session);
+    const { address, fetching } = useSelector(state => state.userAddress);
     const dispatch = useDispatch();
     const [value, setValue] = useState("1");
     const [usuario, setUsuario] = useState(user)
 
     const array = [1, 2, 3,4,5];
+
+    useEffect(() => {        
+        if (user.id) {                    
+            dispatch({ type: ADDRESS_REQUEST, usuario})                                             
+        }
+        
+    }, [])
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -135,25 +144,25 @@ export default function Account() {
                             container
                             spacing={4}
                             className={classes.gridContainer}
-                            justify="center"
+                            //justify="center"
                         >
-                            {array.map(id => (
+                            {address ? address.map((row,id) => (
                                 <Grid item xs={12} sm={6} md={4} key={id} >
                                     <Card className={classes.card} >
                                         <CardContent>
                                         <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                            Word of the Day
+                                            {row.name}
                                         </Typography>
                                             <Typography variant="h5" component="h2">
-                                                asdd
+                                                {row.province}
                                         </Typography>
                                         <Typography className={classes.pos} color="textSecondary">
-                                            adjective
+                                            {row.city}
                                         </Typography>
                                             <Typography variant="body2" component="p">
-                                                well meaning and kindly.
+                                                {row.street}
                                              <br />
-                                                {'"a benevolent smile"'}
+                                                {row.numberHouse}
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
@@ -161,7 +170,7 @@ export default function Account() {
                                         </CardActions>
                                     </Card>
                                 </Grid>                                
-                            ) )}
+                            )):""}
                         </Grid>
                     </TabPanel>
                     <TabPanel value="3">
