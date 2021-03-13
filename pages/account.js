@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
 import Header from "../layout/header";
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
-import { AppBar, TextField, Button, Grid, Card, CardActions, CardContent, makeStyles, Typography, Tab } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { SESSION_REQUEST, ADDRESS_REQUEST } from '../src/constants/actions-types'
-
+import  AddressModal  from '../components/AddressModal';
+import { AppBar, 
+    TextField, 
+    Button, 
+    Grid, 
+    Card, 
+    CardActions, 
+    CardContent, 
+    makeStyles, 
+    Typography, 
+    Tab } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,15 +48,13 @@ export default function Account() {
     const { address, fetching } = useSelector(state => state.userAddress);
     const dispatch = useDispatch();
     const [value, setValue] = useState("1");
-    const [usuario, setUsuario] = useState(user)
+    const [usuario, setUsuario] = useState(user);
 
-    const array = [1, 2, 3,4,5];
-
-    useEffect(() => {        
-        if (user.id) {                    
-            dispatch({ type: ADDRESS_REQUEST, usuario})                                             
+    useEffect(() => {
+        if (user.id) {
+            dispatch({ type: ADDRESS_REQUEST, usuario })
         }
-        
+
     }, [])
 
     const handleChange = (event, newValue) => {
@@ -144,24 +151,46 @@ export default function Account() {
                             container
                             spacing={4}
                             className={classes.gridContainer}
-                            //justify="center"
+                            alignItems="center"
+                        //justify="center"
                         >
-                            {address ? address.map((row,id) => (
+                            <Grid item xs={12} sm={6} md={4}  >
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            <br />
+                                            <br />
+                                        </Typography>
+                                        <Typography align="center" variant="h5" component="h2">
+                                            Añadir Dirección
+                                        </Typography>
+                                        <CardActions style={{justifyContent: 'center'}} >
+                                            < AddressModal uid={usuario.id}/>
+                                        </CardActions>
+                                        <Typography variant="body2" component="p">
+                                            <br />
+                                            <br />
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                              
+                            </Grid>
+                            {address ? address.map((row, id) => (
                                 <Grid item xs={12} sm={6} md={4} key={id} >
                                     <Card className={classes.card} >
                                         <CardContent>
-                                        <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                            {row.name}
-                                        </Typography>
+                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                                {row.name}
+                                            </Typography>
                                             <Typography variant="h5" component="h2">
                                                 {row.province}
-                                        </Typography>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                            {row.city}
-                                        </Typography>
+                                            </Typography>
+                                            <Typography className={classes.pos} color="textSecondary">
+                                                {row.city}
+                                            </Typography>
                                             <Typography variant="body2" component="p">
                                                 {row.street}
-                                             <br />
+                                                <br />
                                                 {row.numberHouse}
                                             </Typography>
                                         </CardContent>
@@ -169,8 +198,8 @@ export default function Account() {
                                             <Button size="small">Learn More</Button>
                                         </CardActions>
                                     </Card>
-                                </Grid>                                
-                            )):""}
+                                </Grid>
+                            )) : ""}
                         </Grid>
                     </TabPanel>
                     <TabPanel value="3">

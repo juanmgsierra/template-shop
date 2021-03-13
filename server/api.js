@@ -21,3 +21,13 @@ export const obtenerDirecciones = async (user) => {
         throw error;
     }
 }
+
+export const saveAddress = async (address) => {
+    try {
+        console.log(address);
+        const response = await axios.post(`${API_FIREBASE}/address/create`, address);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
