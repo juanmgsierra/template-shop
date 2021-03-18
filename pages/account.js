@@ -42,6 +42,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const initialAddress = {
+    
+    name: "",
+    province: "",
+    city: "",
+    street: "",
+    phone: ""
+      
+}
+
 export default function Account() {
     const classes = useStyles();
     const { user } = useSelector(state => state.session);
@@ -165,7 +175,7 @@ export default function Account() {
                                             Añadir Dirección
                                         </Typography>
                                         <CardActions style={{justifyContent: 'center'}} >
-                                            < AddressModal uid={usuario.id}/>
+                                            < AddressModal uid={usuario.id} direction={initialAddress}/>
                                         </CardActions>
                                         <Typography variant="body2" component="p">
                                             <br />
@@ -195,7 +205,8 @@ export default function Account() {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            <Button size="small">Learn More</Button>
+                                            <Button size="small">Editar</Button>
+                                            < AddressModal uid={usuario.id} direction={row} />
                                         </CardActions>
                                     </Card>
                                 </Grid>

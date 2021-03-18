@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { SAVE_ADDRESS } from '../src/constants/actions-types'
+import { SAVE_ADDRESS, UPDATE_ADDRESS } from '../src/constants/actions-types'
 import {
   Button,
   TextField,
@@ -24,18 +24,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function AddressModal({ uid }) {
+export default function AddressModal({ uid, direction }) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [address, setAddress] = useState({
-    name: "",
-    province: "",
-    city: "",
-    street: "",
-    phone: ""
-  });
+  const [address, setAddress] = useState(direction);
 
   const onChange = e => {
     const { name, value } = e.target;
@@ -56,7 +50,9 @@ export default function AddressModal({ uid }) {
   const guardarCambios = async e => {
     e.preventDefault();
     address.userId = uid;
-    dispatch({ type: SAVE_ADDRESS, address })
+    const actionType = address.id ? UPDATE_ADDRESS : SAVE_ADDRESS
+  
+    dispatch({ type: actionType, address })
   }
 
   return (

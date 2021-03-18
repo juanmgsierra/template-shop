@@ -24,10 +24,18 @@ export const obtenerDirecciones = async (user) => {
 
 export const saveAddress = async (address) => {
     try {
-        console.log(address);
         const response = await axios.post(`${API_FIREBASE}/address/create`, address);
         return response.data;
     } catch (error) {
         throw error;
+    }
+}
+
+export const updateAddress = async (address) => {
+    try {
+        const response = await axios.put(`${API_FIREBASE}/address/update/${address.id}`, address);
+        return response.data;
+    } catch (error) {
+        console.log(error);
     }
 }
