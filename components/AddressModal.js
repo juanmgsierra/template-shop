@@ -58,7 +58,7 @@ export default function AddressModal({ uid, direction }) {
   return (
     <div>
       <Button onClick={handleClickOpen}>
-        +
+        {  address.id ? " Editar " : "+" }
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Agregar dirección</DialogTitle>

@@ -13,6 +13,7 @@ import { AppBar,
     CardContent, 
     makeStyles, 
     Typography, 
+    CircularProgress,
     Tab } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -185,7 +186,8 @@ export default function Account() {
                                 </Card>
                               
                             </Grid>
-                            {address ? address.map((row, id) => (
+
+                            {fetching ?  <CircularProgress /> :  address ? address.map((row, id) => (
                                 <Grid item xs={12} sm={6} md={4} key={id} >
                                     <Card className={classes.card} >
                                         <CardContent>
@@ -204,8 +206,7 @@ export default function Account() {
                                                 {row.numberHouse}
                                             </Typography>
                                         </CardContent>
-                                        <CardActions>
-                                            <Button size="small">Editar</Button>
+                                        <CardActions>                                        
                                             < AddressModal uid={usuario.id} direction={row} />
                                         </CardActions>
                                     </Card>

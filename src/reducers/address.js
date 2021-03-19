@@ -20,7 +20,7 @@ const addressReducer = (state = initialState, action) => {
             return { ...state, address: [...action.data], fetching: false };
         case SAVE_ADDRESS:  
         case UPDATE_ADDRESS:      
-            return { ...state, address: action.data, fetching: false };
+            return { ...state, address: action.data, fetching: true };
         case ADDRESS_ERROR:
             return { ...state, error: action.error, fetching: false };
         default:
