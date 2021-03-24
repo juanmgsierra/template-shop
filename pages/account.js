@@ -3,18 +3,20 @@ import Header from "../layout/header";
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { useSelector, useDispatch } from 'react-redux';
 import { SESSION_REQUEST, ADDRESS_REQUEST } from '../src/constants/actions-types'
-import  AddressModal  from '../components/AddressModal';
-import { AppBar, 
-    TextField, 
-    Button, 
-    Grid, 
-    Card, 
-    CardActions, 
-    CardContent, 
-    makeStyles, 
-    Typography, 
+import AddressModal from '../components/AddressModal';
+import {
+    AppBar,
+    TextField,
+    Button,
+    Grid,
+    Card,
+    CardActions,
+    CardContent,
+    makeStyles,
+    Typography,
     CircularProgress,
-    Tab } from '@material-ui/core';
+    Tab
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,13 +46,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initialAddress = {
-    
+
     name: "",
     province: "",
     city: "",
     street: "",
     phone: ""
-      
+
 }
 
 export default function Account() {
@@ -175,8 +177,8 @@ export default function Account() {
                                         <Typography align="center" variant="h5" component="h2">
                                             Añadir Dirección
                                         </Typography>
-                                        <CardActions style={{justifyContent: 'center'}} >
-                                            < AddressModal uid={usuario.id} direction={initialAddress}/>
+                                        <CardActions style={{ justifyContent: 'center' }} >
+                                            < AddressModal uid={usuario.id} direction={initialAddress} />
                                         </CardActions>
                                         <Typography variant="body2" component="p">
                                             <br />
@@ -184,34 +186,42 @@ export default function Account() {
                                         </Typography>
                                     </CardContent>
                                 </Card>
-                              
                             </Grid>
 
-                            {fetching ?  <CircularProgress /> :  address ? address.map((row, id) => (
-                                <Grid item xs={12} sm={6} md={4} key={id} >
-                                    <Card className={classes.card} >
-                                        <CardContent>
-                                            <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                                {row.name}
-                                            </Typography>
-                                            <Typography variant="h5" component="h2">
-                                                {row.province}
-                                            </Typography>
-                                            <Typography className={classes.pos} color="textSecondary">
-                                                {row.city}
-                                            </Typography>
-                                            <Typography variant="body2" component="p">
-                                                {row.street}
-                                                <br />
-                                                {row.numberHouse}
-                                            </Typography>
-                                        </CardContent>
-                                        <CardActions>                                        
-                                            < AddressModal uid={usuario.id} direction={row} />
-                                        </CardActions>
-                                    </Card>
+                            {!fetching ?
+                            <>
+                                <Grid item xs={12} sm={6} md={4} >
+                                    <CircularProgress />
                                 </Grid>
-                            )) : ""}
+                                     <Grid item xs={6} sm={6} md={4} >
+                                     <CircularProgress />
+                                 </Grid>                                
+                                  </>
+                                : address ? address.map((row, id) => (
+                                    <Grid item xs={12} sm={6} md={4} key={id} >
+                                        <Card className={classes.card} >
+                                            <CardContent>
+                                                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                                                    {row.name}
+                                                </Typography>
+                                                <Typography variant="h5" component="h2">
+                                                    {row.province}
+                                                </Typography>
+                                                <Typography className={classes.pos} color="textSecondary">
+                                                    {row.city}
+                                                </Typography>
+                                                <Typography variant="body2" component="p">
+                                                    {row.street}
+                                                    <br />
+                                                    {row.numberHouse}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                < AddressModal uid={usuario.id} direction={row} />
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                )) : ""}
                         </Grid>
                     </TabPanel>
                     <TabPanel value="3">
