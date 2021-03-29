@@ -124,12 +124,14 @@ export default function login() {
                         </Button>
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}>
-                                    <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider: "google" })}>
+                                    <Button variant="contained" color="primary" fullWidth className={classes.submit} 
+                                        onClick={() => dispatch({ type: LOGIN_REQUEST_GOOGLE, provider: "google" })}>
                                         Login Google
                                 </Button>
                                 </Grid>
                                 <Grid item xs={12} sm={6} >
-                                    <Button variant="contained" color="primary" fullWidth className={classes.submit} onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider: "facebook" })}>
+                                    <Button variant="contained" color="primary" fullWidth className={classes.submit} 
+                                        onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider: "facebook" })}>
                                         Login Facebook
                                 </Button>
                                 </Grid>

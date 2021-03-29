@@ -30,10 +30,9 @@ export default function MyApp(props) {
       </Head>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-       
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <PersistGate persistor={persistor}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <PersistGate persistor={persistor}>
             <Component {...pageProps} />
           </PersistGate>
         </ThemeProvider>

@@ -39,3 +39,30 @@ export const updateAddress = async (address) => {
         console.log(error);
     }
 }
+
+export const obtenerCarrito = async (user) => {
+    try {
+        const response = await axios.get(`${API_FIREBASE}/cart/find/${user.id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const saveCart = async (cart) => {
+    try {
+        const response = await axios.post(`${API_FIREBASE}/cart/create`, cart);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const deleteCart = async (cart) => {
+    try {
+        const response = await axios.delete(`${API_FIREBASE}/cart/delete/${cart.id}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}

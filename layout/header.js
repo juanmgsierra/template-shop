@@ -104,7 +104,7 @@ const Header = () => {
                         <AccountCircle />
                     </IconButton>
                     <IconButton color="inherit">
-                        <Badge badgeContent={1} color="secondary">
+                        <Badge badgeContent={0} color="secondary">
                             <ShoppingCartIcon />
                         </Badge>
                     </IconButton>
