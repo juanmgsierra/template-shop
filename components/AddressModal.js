@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { SAVE_ADDRESS, UPDATE_ADDRESS } from '../src/constants/actions-types'
+import { WATCH_SAVE_ADDRESS, WATCH_UPDATE_ADDRESS } from '../src/constants/actions-types'
 import {
   Button,
   TextField,
@@ -8,11 +8,10 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  makeStyles    
+  makeStyles
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(2),
@@ -20,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-
 }));
 
 
@@ -28,18 +26,18 @@ export default function AddressModal({ uid, direction }) {
   const [open, setOpen] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  const [address, setAddress] = useState(direction);
+  const [uploadAddress, setUploadAddress] = useState(direction);
 
   const onChange = e => {
     const { name, value } = e.target;
-    setAddress((prev) => ({
+    setUploadAddress((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
   const handleClickOpen = () => {
+    setUploadAddress(direction);
     setOpen(true);
   };
 
@@ -49,17 +47,18 @@ export default function AddressModal({ uid, direction }) {
 
   const guardarCambios = async e => {
     e.preventDefault();
-    address.userId = uid;
-    const actionType = address.id ? UPDATE_ADDRESS : SAVE_ADDRESS
-  
-    dispatch({ type: actionType, address })
-  }
+    uploadAddress.userId = uid;
+    const actionType = uploadAddress.id ? WATCH_UPDATE_ADDRESS : WATCH_SAVE_ADDRESS
 
+    dispatch({ type: actionType, uploadAddress });
+    handleClose();
+  }
+  
   return (
     <div>
       <Button onClick={handleClickOpen}>
-        {  address.id ? " Editar " : "+" }
-      </Button>
+        {uploadAddress.id ? "Editar" : "+"}
+      </Button>     
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Agregar dirección</DialogTitle>
         <DialogContent>
@@ -72,8 +71,8 @@ export default function AddressModal({ uid, direction }) {
                 fullWidth
                 label="Nombre"
                 name="name"
-                value={address.name}
-                onChange={onChange} 
+                value={uploadAddress.name}
+                onChange={onChange}
                 autoFocus
               />
               <Grid item xs={12} sm={6}>
@@ -84,7 +83,7 @@ export default function AddressModal({ uid, direction }) {
                   fullWidth
                   label="Departamento"
                   name="province"
-                  value={address.province}
+                  value={uploadAddress.province}
                   onChange={onChange}
                 />
               </Grid>
@@ -95,7 +94,7 @@ export default function AddressModal({ uid, direction }) {
                   required
                   fullWidth
                   name="city"
-                  value={address.city}
+                  value={uploadAddress.city}
                   onChange={onChange}
                   label="Ciudad"
                 />
@@ -107,7 +106,7 @@ export default function AddressModal({ uid, direction }) {
                 fullWidth
                 label="Dirección"
                 name="street"
-                value={address.street}
+                value={uploadAddress.street}
                 onChange={onChange}
 
               /> <TextField
@@ -116,9 +115,9 @@ export default function AddressModal({ uid, direction }) {
                 required
                 fullWidth
                 label="Telefono"
-                value={address.phone}
+                value={uploadAddress.phone}
                 onChange={onChange}
-                name="phone"   
+                name="phone"
               />
               <Button
                 type="submit"

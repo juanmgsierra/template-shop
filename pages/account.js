@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import Header from "../layout/header";
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import { useSelector, useDispatch } from 'react-redux';
-import { SESSION_REQUEST, ADDRESS_REQUEST } from '../src/constants/actions-types'
+import Skelleton from '@material-ui/lab/Skeleton';
+import { SESSION_REQUEST, ADDRESS_REQUEST, WATCH_DELETE_ADDRESS, WATCH_PREDETERMINED_ADDRESS, WATCH_UPDATE_ADDRESS } from '../src/constants/actions-types'
 import AddressModal from '../components/AddressModal';
 import {
     AppBar,
@@ -15,8 +16,11 @@ import {
     makeStyles,
     Typography,
     CircularProgress,
-    Tab
+    Tab,
+    CardHeader,
+    IconButton
 } from '@material-ui/core';
+import BeenhereIcon from '@material-ui/icons/Beenhere';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,29 +49,30 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const initialAddress = {
-
-    name: "",
-    province: "",
-    city: "",
-    street: "",
-    phone: ""
-
-}
 
 export default function Account() {
     const classes = useStyles();
     const { user } = useSelector(state => state.session);
     const { address, fetching } = useSelector(state => state.userAddress);
     const dispatch = useDispatch();
-    const [value, setValue] = useState("1");
+    const [value, setValue] = useState("2");
     const [usuario, setUsuario] = useState(user);
+
+    const itsNew = address.length == 0 ? true : false;
+
+    const initialAddress = {
+        name: "",
+        province: "",
+        city: "",
+        street: "",
+        phone: "",
+        predetermined: itsNew,
+    }
 
     useEffect(() => {
         if (user.id) {
             dispatch({ type: ADDRESS_REQUEST, usuario })
         }
-
     }, [])
 
     const handleChange = (event, newValue) => {
@@ -89,6 +94,23 @@ export default function Account() {
             return alert("Complete los campos");
         }
         dispatch({ type: SESSION_REQUEST, usuario })
+    }
+
+    const eliminarDireccion = id => {
+        confirm("Desea eliminar esta dirección?") &&
+            dispatch({ type: WATCH_DELETE_ADDRESS, id });
+    }
+
+    const predAddres = direction => {
+        if (confirm("Se establecera esta direccion como predeterminada, desea continuar?")) {
+            const uploadAddress = address.find(result => result.predetermined == true);
+            if (uploadAddress) {
+                uploadAddress.predetermined = false;
+                dispatch({ type: WATCH_UPDATE_ADDRESS, uploadAddress });
+            }
+            direction.predetermined = true;
+            dispatch({ type: WATCH_PREDETERMINED_ADDRESS, direction })
+        }
     }
 
     return (
@@ -187,17 +209,20 @@ export default function Account() {
                                     </CardContent>
                                 </Card>
                             </Grid>
-
-                            {!fetching ?
-                            <>
-                                <Grid item xs={12} sm={6} md={4} >
-                                    <CircularProgress />
+                            {fetching ?
+                                <>
+                                 <Grid item xs={12} sm={6} md={4}  >
+                                    <Card className={classes.card}>
+                                        <CardContent>
+                                            <Skelleton width="100%" height={50} />                                
+                                            <Skelleton width="100%" height={50} />
+                                            <Skelleton width="100%" height={50} />
+                                            <br/>
+                                        </CardContent>
+                                    </Card>
                                 </Grid>
-                                     <Grid item xs={6} sm={6} md={4} >
-                                     <CircularProgress />
-                                 </Grid>                                
-                                  </>
-                                : address ? address.map((row, id) => (
+                                </>
+                                : address.length > 0 ? address.map((row, id) => (
                                     <Grid item xs={12} sm={6} md={4} key={id} >
                                         <Card className={classes.card} >
                                             <CardContent>
@@ -206,6 +231,11 @@ export default function Account() {
                                                 </Typography>
                                                 <Typography variant="h5" component="h2">
                                                     {row.province}
+                                                    {row.predetermined &&
+                                                        <IconButton>
+                                                            <BeenhereIcon />
+                                                        </IconButton>
+                                                    }
                                                 </Typography>
                                                 <Typography className={classes.pos} color="textSecondary">
                                                     {row.city}
@@ -213,11 +243,21 @@ export default function Account() {
                                                 <Typography variant="body2" component="p">
                                                     {row.street}
                                                     <br />
-                                                    {row.numberHouse}
+                                                    (504) {row.phone}
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
                                                 < AddressModal uid={usuario.id} direction={row} />
+                                                {row.id &&
+                                                    <Button onClick={() => eliminarDireccion(row.id)}>
+                                                        {"Eliminar"}
+                                                    </Button>
+                                                }
+                                                {!row.predetermined &&
+                                                    <Button onClick={() => predAddres(row)}>
+                                                        {"Predeterminar"}
+                                                    </Button>
+                                                }
                                             </CardActions>
                                         </Card>
                                     </Grid>

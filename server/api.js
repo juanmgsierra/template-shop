@@ -40,6 +40,14 @@ export const updateAddress = async (address) => {
     }
 }
 
+export const deleteAddress = async (address) => {
+    try {
+        await axios.delete(`${API_FIREBASE}/address/${address}`)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const obtenerCarrito = async (user) => {
     try {
         const response = await axios.get(`${API_FIREBASE}/cart/find/${user.id}`);
