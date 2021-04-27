@@ -16,11 +16,10 @@ app.apps.length === 0 &&
     app.initializeApp(firebaseConfig);
 
 
-export const loginWithEmail = (user) => {
+export const loginWithEmail =  (user) => {
     return new Promise((resolve, reject) => {
-        app.auth().signInWithEmailAndPassword(user.email, user.password).then((data) => {
-            const { displayName, email, photoURL } = data.user;
-            resolve({ displayName, email, photoURL })
+        app.auth().signInWithEmailAndPassword(user.email, user.password).then(data => {           
+            resolve(sesionLog(data));            
         }).catch(err =>
             reject(err))
     })
@@ -33,16 +32,39 @@ export const loginWithProvider = (typeProvider) => {
     } else {
         Provider = new app.auth.FacebookAuthProvider();
     }
-    return app.auth().signInWithPopup(Provider).then(data => {
-        const { displayName, email, photoURL } = data.user;
-        return { displayName, email, photoURL }
-    });
+
+    return new Promise((resolve, reject) => {
+        app.auth().signInWithPopup(Provider).then(data => {
+            resolve(sesionLog(data));   
+        }).catch(err => reject(err))
+    })
 }
 
-export const logOut = () => {
-    return app.auth().signOut().then(() => {
+export const registerWithEmail = (user) => {
+    return new Promise((resolve, reject) => {
+        app.auth().createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
+            resolve(sesionLog(auth));   
+        }).catch((error) => {
+            reject(error)
+        })
+    })
+}
 
-    }).catch((err) => {
-        console.log(err)
-    });
+const sesionLog = async (auth) => {
+    const id = auth.user.uid
+    await app.firestore().collection("Usuarios").doc(id).set({
+        id: id,
+        email: auth.user.email,
+        logTime: Date.now()
+    }, { merge: true });
+    const doc = await app.firestore().collection("Usuarios").doc(id).get();
+    return doc.data();
+}
+
+export const logOut = async () => {
+    try {
+        await app.auth().signOut();
+    } catch (err) {
+        console.log(err);
+    }
 }

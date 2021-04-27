@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import { useRouter } from 'next/router'
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,10 +59,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-
 const Header = () => {
     const router = useRouter();
     const classes = useStyles();
+    const { user } = useSelector(state => state.session);
+
+    const accountSession = () => {      
+        user.id ? router.push("/account") : router.push("/login")
+    }
+
     return (
         <div className={classes.grow}>
             <AppBar className={classes.root}>
@@ -94,11 +100,11 @@ const Header = () => {
                         aria-controls="primary-search-account-menu"
                         aria-haspopup="true"
                         color="inherit"
-                        onClick={()=>router.push("/login")}>
+                        onClick={accountSession}>
                         <AccountCircle />
                     </IconButton>
                     <IconButton color="inherit">
-                        <Badge badgeContent={1} color="secondary">
+                        <Badge badgeContent={0} color="secondary">
                             <ShoppingCartIcon />
                         </Badge>
                     </IconButton>

@@ -1,19 +1,24 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { loginWithProvider, loginWithEmail, logOut } from "../../server/firebase"
+import { loginWithProvider, loginWithEmail, registerWithEmail, logOut } from "../../server/firebase"
+import { editarPerfil } from '../../server/api'
 import {
     LOGIN_REQUEST_GOOGLE,
     LOGIN_REQUEST_FACEBOOK,
     LOGOUT,
     LOGIN_SUCCESS,
     LOGIN_ERROR,
-    LOGIN_REQUEST
+    LOGIN_REQUEST,
+    REGISTER_REQUEST,
+    SESSION_REQUEST,
+    SESSION_SUCCESS,
+    SESSION_ERROR
 } from '../constants/actions-types';
 
 
 function* login(action) {
     try {
         const data = yield call(loginWithEmail,action.usuario)
-        yield put({ type: LOGIN_SUCCESS, data })
+        yield put({ type: LOGIN_SUCCESS, data });
     }catch(error){
         yield put({ type: LOGIN_ERROR, error });
     }
@@ -22,7 +27,7 @@ function* login(action) {
 function* loginBtn(action) {
     try {
         const data = yield call(loginWithProvider, action.provider)
-        yield put({ type: LOGIN_SUCCESS, data })
+        yield put({ type: LOGIN_SUCCESS, data });
 
     } catch (error) {
         yield put({ type: LOGIN_ERROR, error });
@@ -37,10 +42,30 @@ function* logOutSession() {
     }
 }
 
+function* register(action){
+    try {
+        const data = yield call(registerWithEmail, action.usuario);
+        yield put({ type: LOGIN_SUCCESS, data });
+
+    } catch (error) {
+        yield put({type:LOGIN_ERROR, error});
+    }
+}
+
+function* updateSesion(action){
+    try {        
+        const data = yield call(editarPerfil, action.usuario);
+        yield put({type:SESSION_SUCCESS, data});
+    } catch (error) {
+        yield put({type:SESSION_ERROR, error});
+    }
+}
 
 export function* rootSession() {
     yield takeEvery(LOGIN_REQUEST, login);
     yield takeEvery(LOGIN_REQUEST_GOOGLE, loginBtn);
     yield takeEvery(LOGIN_REQUEST_FACEBOOK, loginBtn);
+    yield takeEvery(REGISTER_REQUEST,register);
     yield takeEvery(LOGOUT, logOutSession);
+    yield takeEvery(SESSION_REQUEST,updateSesion);
 }

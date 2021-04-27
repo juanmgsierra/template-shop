@@ -5,7 +5,8 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../src/theme";
 import { Provider } from 'react-redux';
-import store from '../src/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from '../src/store';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
@@ -28,11 +29,13 @@ export default function MyApp(props) {
         />
       </Head>
       <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Component {...pageProps} />
-      </ThemeProvider>
+        <ThemeProvider theme={theme}>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <PersistGate persistor={persistor}>
+            <Component {...pageProps} />
+          </PersistGate>
+        </ThemeProvider>
       </Provider>
     </React.Fragment>
   );
