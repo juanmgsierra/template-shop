@@ -19,7 +19,6 @@ import {
 
 function* getAddress(action){
     try {
-        console.log("obtener direcciones")
         const data = yield call(obtenerDirecciones, action.usuario)
         yield put({type:ADDRESS_SUCCESS,data});
     } catch (error) {

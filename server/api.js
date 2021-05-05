@@ -7,7 +7,7 @@ const API_FIREBASE =  "http://localhost:5001/e-commerce-7e1b8/us-central1/app/ap
 export const editarPerfil = async (user) => {
     try {
         const response = await axios.put(`${API_FIREBASE}/users/update/${user.id}`, user);
-        return response;
+        return response.data;
     } catch (error) {
         throw error;
     }

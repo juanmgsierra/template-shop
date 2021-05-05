@@ -28,10 +28,10 @@ const sessionReducer = (state = initialState, action) => {
         case LOGIN_REQUEST_FACEBOOK:
         case LOGIN_REQUEST_GOOGLE:
         case SESSION_REQUEST:
-            return { ...state, fetching: true };
+            return { ...state, fetching: true, error: null};
         case LOGIN_SUCCESS:
         case SESSION_SUCCESS:
-            return { ...state, user: { ...action.data }, fetching: false };
+            return { ...state, user: { ...action.data }, fetching: false, error: null };
         case LOGOUT:
             return { ...state, user: initialState.user, fetching: false };
         case LOGIN_ERROR:
