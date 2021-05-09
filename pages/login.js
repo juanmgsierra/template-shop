@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
 import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST } from '../src/constants/actions-types'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -51,7 +51,7 @@ export default function login() {
 
     const [usuario, setUsuario] = useState(initialState)
 
-    const { user, fetching } = useSelector(state => state.session);
+    const { user, fetching, error } = useSelector(state => state.session);
 
     user.id && router.push("/")
 
@@ -64,7 +64,7 @@ export default function login() {
     };
 
 
-    const login = async (e) => {
+    const login = (e) => {
         e.preventDefault();
         const { email, password } = usuario;
         if (!email || !password) {
