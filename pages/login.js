@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import { useRouter } from 'next/router'
 import Skelleton from '@material-ui/lab/Skeleton';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,14 +64,16 @@ export default function login() {
         }));
     };
 
-
     const login = (e) => {
         e.preventDefault();
         const { email, password } = usuario;
         if (!email || !password) {
             return alert("Ingrese sus credenciales");
         }
-        dispatch({ type: LOGIN_REQUEST, usuario })
+        dispatch({ type: LOGIN_REQUEST, usuario })   
+        if(fetching){
+            alert(error.message);
+        }
     }
 
     return (
@@ -122,6 +125,7 @@ export default function login() {
                             >
                                 Ingresar
                         </Button>
+                        { error &&   <FormHelperText id="component-error-text">{ error.message } </FormHelperText> }
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}>
                                     <Button variant="contained" color="primary" fullWidth className={classes.submit} 

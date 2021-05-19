@@ -37,6 +37,8 @@ const sessionReducer = (state = initialState, action) => {
         case LOGIN_ERROR:
         case SESSION_ERROR:
             return { ...state, error: action.error, fetching: false };
+        case "persist/REHYDRATE":
+            return { ...state, error: null, fetching: false };
         default:
             return state;
     }
