@@ -28,3 +28,14 @@ export const WATCH_UPDATE_ADDRESS = "WATCH_UPDATE_ADDRESS";
 export const WATCH_SAVE_ADDRESS = "WATCH_SAVE_ADDRESS";
 export const WATCH_PREDETERMINED_ADDRESS = "WATCH_PREDETERMINED_ADDRESS";
 export const WATCH_DELETE_ADDRESS = "WATCH_DELETE_ADDRESS";
+
+export const firebaseErrors = {
+    'auth/invalid-email': 'Correo electrónico no valido',
+    'auth/user-disabled': 'Correo electrónico dado ha sido deshabilitado',
+    'auth/user-not-found':'No hay ningún usuario que corresponda al correo electrónico dado',
+    'auth/wrong-password': 'La cuenta correspondiente al correo electrónico no tiene una contraseña configurada',
+    'auth/account-exists-with-different-credential':'Ya existe una cuenta con la dirección de correo electrónico afirmada por la credencial',
+    'auth/operation-not-allowed':'El tipo de cuenta correspondiente a la credencial no está habilitado',
+    'auth/popup-blocked':'El navegador bloqueó la ventana emergente',
+    'auth/popup-closed-by-user':'No se completo el inicio de sesión en el proveedor',    
+  }; 
