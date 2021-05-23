@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
-import { useDispatch } from 'react-redux';
-import { REGISTER_REQUEST } from '../src/constants/actions-types'
+import { useDispatch, useSelector } from 'react-redux';
+import { REGISTER_REQUEST, FIREBASE_ERRORS } from '../src/constants/actions-types'
 import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -54,6 +55,7 @@ export default function login() {
         }));
     };
 
+    const { fetching, error } = useSelector(state => state.session);
 
     const register = async (e) => {
         e.preventDefault();
@@ -128,7 +130,8 @@ export default function login() {
                             className={classes.submit}
                         >
                             Registrarse
-                        </Button>                                      
+                        </Button>   
+                        { error &&   <FormHelperText id="component-error-text">{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }                                   
                     </form>
                 </Paper>
             </Container>

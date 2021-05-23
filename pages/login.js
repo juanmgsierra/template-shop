@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
-import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST } from '../src/constants/actions-types'
+import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST, FIREBASE_ERRORS } from '../src/constants/actions-types'
 import { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -70,16 +70,12 @@ export default function login() {
         if (!email || !password) {
             return alert("Ingrese sus credenciales");
         }
-        dispatch({ type: LOGIN_REQUEST, usuario })   
-        if(fetching){
-            alert(error.message);
-        }
+        dispatch({ type: LOGIN_REQUEST, usuario })           
     }
 
     return (
         <div>
             <Header />
-
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Paper className={classes.paper}>
@@ -125,7 +121,7 @@ export default function login() {
                             >
                                 Ingresar
                         </Button>
-                        { error &&   <FormHelperText id="component-error-text">{ error.message } </FormHelperText> }
+                        { error &&   <FormHelperText id="component-error-text">{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}>
                                     <Button variant="contained" color="primary" fullWidth className={classes.submit} 
