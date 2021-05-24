@@ -12,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import Skelleton from '@material-ui/lab/Skeleton';
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -44,7 +46,7 @@ const initialState = {
 export default function login() {
     const classes = useStyles();
     const dispatch = useDispatch();
-
+    const router = useRouter();
     const [usuario, setUsuario] = useState(initialState)
 
     const onChange = e => {
@@ -55,7 +57,9 @@ export default function login() {
         }));
     };
 
-    const { fetching, error } = useSelector(state => state.session);
+    const { user, fetching, error } = useSelector(state => state.session);
+
+    user.id && router.push("/login")
 
     const register = async (e) => {
         e.preventDefault();
@@ -84,6 +88,7 @@ export default function login() {
                     <Typography component="h1" variant="h5">
                         Registrate
                     </Typography>
+                    {!fetching ? (
                     <form className={classes.form} noValidate>
                         <TextField
                             variant="outlined"
@@ -131,8 +136,19 @@ export default function login() {
                         >
                             Registrarse
                         </Button>   
-                        { error &&   <FormHelperText id="component-error-text">{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }                                   
+                        { error &&   <FormHelperText error={true}>{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }                                   
                     </form>
+                     ) :
+                     (<>
+                         <br />
+                         <Skelleton width="100%" height={80} />
+                         <Skelleton width="100%" height={80} />
+                         <Skelleton width="100%" height={80} />
+                         <br />
+                         <Skelleton width="100%" height={70} />
+                         <br/>
+                        
+                     </>)}
                 </Paper>
             </Container>
         </div>

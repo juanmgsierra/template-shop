@@ -5,6 +5,7 @@ export const LOGOUT = 'LOGOUT';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_ERROR = 'REGISTER_ERROR';
 export const SESSION_REQUEST = 'SESSION_REQUEST';
 export const SESSION_SUCCESS = 'SESSION_SUCCESS';
@@ -28,6 +29,8 @@ export const WATCH_UPDATE_ADDRESS = "WATCH_UPDATE_ADDRESS";
 export const WATCH_SAVE_ADDRESS = "WATCH_SAVE_ADDRESS";
 export const WATCH_PREDETERMINED_ADDRESS = "WATCH_PREDETERMINED_ADDRESS";
 export const WATCH_DELETE_ADDRESS = "WATCH_DELETE_ADDRESS";
+export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
+export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 
 export const FIREBASE_ERRORS = {
   'auth/invalid-email': 'Correo electrónico no valido',
@@ -41,5 +44,6 @@ export const FIREBASE_ERRORS = {
   'auth/weak-password':'La contraseña debe tener al menos 6 caracteres',
   'auth/email-already-in-use':'La dirección de correo electrónico ya está siendo utilizada por otra cuenta',
   'auth/invalid-email':'La dirección de correo electrónico no es válida',
+  'auth/no-verifier':'No se ha verificado su correo electrónico',
   'auth/internal-error':'Error interno',
 };

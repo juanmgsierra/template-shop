@@ -1,3 +1,4 @@
+import { ContactSupportOutlined } from '@material-ui/icons';
 import app from 'firebase';
 import 'firebase/auth';
 
@@ -18,10 +19,13 @@ app.apps.length === 0 &&
 
 export const loginWithEmail =  (user) => {
     return new Promise((resolve, reject) => {
-        app.auth().signInWithEmailAndPassword(user.email, user.password).then(data => {           
-            resolve(sesionLog(data));            
-        }).catch(err =>
-            reject(err))
+        app.auth().signInWithEmailAndPassword(user.email, user.password).then(data => {   
+            if(!app.auth().currentUser.emailVerified) {
+                throw {'code':'auth/no-verifier'};                 
+            }       
+            resolve(sesionLog(data));  
+        }).catch(err => {            
+            reject(err) })
     })
 }
 
@@ -43,6 +47,8 @@ export const loginWithProvider = (typeProvider) => {
 export const registerWithEmail = (user) => {
     return new Promise((resolve, reject) => {
         app.auth().createUserWithEmailAndPassword(user.email, user.password).then((auth) => {
+            var user = app.auth().currentUser;
+            user.sendEmailVerification()
             resolve(sesionLog(auth));   
         }).catch((error) => {
             reject(error)
@@ -66,5 +72,13 @@ export const logOut = async () => {
         await app.auth().signOut();
     } catch (err) {
         console.log(err);
+    }
+}
+
+export const resetPass = async (email) => {
+    try {
+        await app.auth().sendPasswordResetEmail(email);
+    } catch (error) {
+        console.log(error)
     }
 }

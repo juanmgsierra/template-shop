@@ -10,20 +10,19 @@ export default function IndexPage() {
   const { user } = useSelector(state => state.session);
   return (
     <div>
-      
-        <Header />
-        <Typography variant="h2">Pagina principal</Typography>
-        <Link href="/about">
-          <a>About</a>
-        </Link>
-        {
-                user && user.email && <div>
-                    <strong>{user.displayName}</strong>
-                    <Button variant="contained" color="primary" onClick={() => dispatch({ type: LOGOUT })}>
-                        Logout
+      <Header />
+      <Typography variant="h2">Pagina principal</Typography>
+      <Link href="/about">
+        <a>About</a>
+      </Link>
+      {
+        user && user.email && <div>
+          <strong>{user.displayName}</strong>
+          <Button variant="contained" color="primary" onClick={() => dispatch({ type: LOGOUT })}>
+            Logout
                 </Button>
-                </div>
-            }
+        </div>
+      }
     </div>
   );
 }

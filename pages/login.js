@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
-import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST, FIREBASE_ERRORS } from '../src/constants/actions-types'
+import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST, FIREBASE_ERRORS, RESET_PASSWORD_REQUEST } from '../src/constants/actions-types'
 import { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -73,6 +73,15 @@ export default function login() {
         dispatch({ type: LOGIN_REQUEST, usuario })           
     }
 
+    const resetPassword = () => {
+        const { email } = usuario;
+        if(!email){
+            return alert("Ingrese su correo electronico")
+        }
+
+        dispatch({ type: RESET_PASSWORD_REQUEST, email }) 
+    }
+
     return (
         <div>
             <Header />
@@ -121,7 +130,7 @@ export default function login() {
                             >
                                 Ingresar
                         </Button>
-                        { error &&   <FormHelperText id="component-error-text">{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }
+                        { error &&   <FormHelperText error={true}>{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}>
                                     <Button variant="contained" color="primary" fullWidth className={classes.submit} 
@@ -138,8 +147,8 @@ export default function login() {
                             </Grid>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="/login" variant="body2">
-                                        Olvidaste tu clave?
+                                    <Link href="/login" variant="body2" >
+                                        <a onClick={resetPassword}>Olvidaste tu clave?</a>
                                 </Link>
                                 </Grid>
                                 <Grid item>
