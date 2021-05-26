@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
-import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST } from '../src/constants/actions-types'
+import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST, FIREBASE_ERRORS, RESET_PASSWORD_REQUEST } from '../src/constants/actions-types'
 import { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import { useRouter } from 'next/router'
 import Skelleton from '@material-ui/lab/Skeleton';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,20 +64,27 @@ export default function login() {
         }));
     };
 
-
     const login = (e) => {
         e.preventDefault();
         const { email, password } = usuario;
         if (!email || !password) {
             return alert("Ingrese sus credenciales");
         }
-        dispatch({ type: LOGIN_REQUEST, usuario })
+        dispatch({ type: LOGIN_REQUEST, usuario })           
+    }
+
+    const resetPassword = () => {
+        const { email } = usuario;
+        if(!email){
+            return alert("Ingrese su correo electronico")
+        }
+
+        dispatch({ type: RESET_PASSWORD_REQUEST, email }) 
     }
 
     return (
         <div>
             <Header />
-
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Paper className={classes.paper}>
@@ -122,6 +130,7 @@ export default function login() {
                             >
                                 Ingresar
                         </Button>
+                        { error &&   <FormHelperText error={true}>{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}>
                                     <Button variant="contained" color="primary" fullWidth className={classes.submit} 
@@ -138,8 +147,8 @@ export default function login() {
                             </Grid>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="/login" variant="body2">
-                                        Olvidaste tu clave?
+                                    <Link href="/login" variant="body2" >
+                                        <a onClick={resetPassword}>Olvidaste tu clave?</a>
                                 </Link>
                                 </Grid>
                                 <Grid item>

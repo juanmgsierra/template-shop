@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
-import { useDispatch } from 'react-redux';
-import { REGISTER_REQUEST } from '../src/constants/actions-types'
+import { useDispatch, useSelector } from 'react-redux';
+import { REGISTER_REQUEST, FIREBASE_ERRORS } from '../src/constants/actions-types'
 import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Skelleton from '@material-ui/lab/Skeleton';
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -43,7 +46,7 @@ const initialState = {
 export default function login() {
     const classes = useStyles();
     const dispatch = useDispatch();
-
+    const router = useRouter();
     const [usuario, setUsuario] = useState(initialState)
 
     const onChange = e => {
@@ -54,6 +57,9 @@ export default function login() {
         }));
     };
 
+    const { user, fetching, error } = useSelector(state => state.session);
+
+    user.id && router.push("/login")
 
     const register = async (e) => {
         e.preventDefault();
@@ -82,6 +88,7 @@ export default function login() {
                     <Typography component="h1" variant="h5">
                         Registrate
                     </Typography>
+                    {!fetching ? (
                     <form className={classes.form} noValidate>
                         <TextField
                             variant="outlined"
@@ -128,8 +135,20 @@ export default function login() {
                             className={classes.submit}
                         >
                             Registrarse
-                        </Button>                                      
+                        </Button>   
+                        { error &&   <FormHelperText error={true}>{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }                                   
                     </form>
+                     ) :
+                     (<>
+                         <br />
+                         <Skelleton width="100%" height={80} />
+                         <Skelleton width="100%" height={80} />
+                         <Skelleton width="100%" height={80} />
+                         <br />
+                         <Skelleton width="100%" height={70} />
+                         <br/>
+                        
+                     </>)}
                 </Paper>
             </Container>
         </div>

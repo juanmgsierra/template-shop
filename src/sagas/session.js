@@ -1,5 +1,5 @@
 import { takeEvery, put, call } from 'redux-saga/effects';
-import { loginWithProvider, loginWithEmail, registerWithEmail, logOut } from "../../server/firebase"
+import { loginWithProvider, loginWithEmail, registerWithEmail, logOut, resetPass } from "../../server/firebase"
 import { editarPerfil } from '../../server/api'
 import {
     LOGIN_REQUEST_GOOGLE,
@@ -11,7 +11,11 @@ import {
     REGISTER_REQUEST,
     SESSION_REQUEST,
     SESSION_SUCCESS,
-    SESSION_ERROR
+    SESSION_ERROR,
+    REGISTER_SUCCESS,
+    REGISTER_ERROR,
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_SUCCESS
 } from '../constants/actions-types';
 
 
@@ -45,10 +49,10 @@ function* logOutSession() {
 function* register(action){
     try {
         const data = yield call(registerWithEmail, action.usuario);
-        yield put({ type: LOGIN_SUCCESS, data });
+        yield put({ type: REGISTER_SUCCESS, data });
 
     } catch (error) {
-        yield put({type:LOGIN_ERROR, error});
+        yield put({type:REGISTER_ERROR, error});
     }
 }
 
@@ -61,6 +65,15 @@ function* updateSesion(action){
     }
 }
 
+function* resetPassword(action){
+    try {
+        yield call(resetPass, action.email);
+        yield put({type:RESET_PASSWORD_SUCCESS})
+    } catch (error) {
+        yield put({type:SESSION_ERROR, error});
+    }
+}
+
 export function* rootSession() {
     yield takeEvery(LOGIN_REQUEST, login);
     yield takeEvery(LOGIN_REQUEST_GOOGLE, loginBtn);
@@ -68,4 +81,5 @@ export function* rootSession() {
     yield takeEvery(REGISTER_REQUEST,register);
     yield takeEvery(LOGOUT, logOutSession);
     yield takeEvery(SESSION_REQUEST,updateSesion);
+    yield takeEvery(RESET_PASSWORD_REQUEST, resetPassword)
 }
