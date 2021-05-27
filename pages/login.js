@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import Header from "../layout/header";
 import { useSelector, useDispatch } from 'react-redux';
 import { LOGIN_REQUEST_GOOGLE, LOGIN_REQUEST_FACEBOOK, LOGIN_REQUEST, FIREBASE_ERRORS, RESET_PASSWORD_REQUEST } from '../src/constants/actions-types'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -15,8 +15,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import { useRouter } from 'next/router'
 import Skelleton from '@material-ui/lab/Skeleton';
-import FormHelperText from '@material-ui/core/FormHelperText';
-
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -130,7 +129,7 @@ export default function login() {
                             >
                                 Ingresar
                         </Button>
-                        { error &&   <FormHelperText error={true}>{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }
+                        { error && <Alert severity="error">{FIREBASE_ERRORS[error.code] || "Error inesperado"}</Alert>}   
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}>
                                     <Button variant="contained" color="primary" fullWidth className={classes.submit} 

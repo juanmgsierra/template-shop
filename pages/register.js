@@ -11,8 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Skelleton from '@material-ui/lab/Skeleton';
+import Alert from '@material-ui/lab/Alert';
 import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const initialState = {
     email: "",
     password: "",
-    repassword:""
+    repassword: ""
 }
 
 export default function login() {
@@ -57,9 +57,7 @@ export default function login() {
         }));
     };
 
-    const { user, fetching, error } = useSelector(state => state.session);
-
-    user.id && router.push("/login")
+    const { user, fetching, error } = useSelector(state => state.session);    
 
     const register = async (e) => {
         e.preventDefault();
@@ -68,7 +66,7 @@ export default function login() {
             return alert("No deje campos en blanco");
         }
 
-        if(password != repassword){
+        if (password != repassword) {
             return alert("La clave es distinta");
         }
 
@@ -89,67 +87,76 @@ export default function login() {
                         Registrate
                     </Typography>
                     {!fetching ? (
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Dirección de correo"
-                            name="email"
-                            value={usuario.email}
-                            onChange={onChange}
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Clave"
-                            type="password"
-                            value={usuario.password}
-                            autoComplete="current-password"
-                            onChange={onChange}
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="repassword"
-                            label="Repetir Clave"
-                            type="password"
-                            value={usuario.repassword}
-                            autoComplete="current-password"
-                            onChange={onChange}
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={register}
-                            className={classes.submit}
-                        >
-                            Registrarse
-                        </Button>   
-                        { error &&   <FormHelperText error={true}>{ FIREBASE_ERRORS[error.code] || "Error inesperado" } </FormHelperText> }                                   
-                    </form>
-                     ) :
-                     (<>
-                         <br />
-                         <Skelleton width="100%" height={80} />
-                         <Skelleton width="100%" height={80} />
-                         <Skelleton width="100%" height={80} />
-                         <br />
-                         <Skelleton width="100%" height={70} />
-                         <br/>
-                        
-                     </>)}
-                </Paper>
+                        <form className={classes.form} noValidate>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Dirección de correo"
+                                name="email"
+                                value={usuario.email}
+                                onChange={onChange}
+                                autoComplete="email"
+                                autoFocus
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Clave"
+                                type="password"
+                                value={usuario.password}
+                                autoComplete="current-password"
+                                onChange={onChange}
+                            />
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="repassword"
+                                label="Repetir Clave"
+                                type="password"
+                                value={usuario.repassword}
+                                autoComplete="current-password"
+                                onChange={onChange}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                onClick={register}
+                                className={classes.submit}
+                            >
+                                Registrarse
+                        </Button>
+                            { error && <Alert severity="error">{FIREBASE_ERRORS[error.code] || "Error inesperado"}</Alert>}   
+                            { user.id && 
+                            <Alert
+                                action={ <Button color="inherit" size="small" onClick={() => router.push("/login")  }>
+                                        Listo
+                                    </Button>
+                                }
+                            >Registrado exitosamente, revisa tu bandeja de correo y 
+                            confirma en el enlace que se envio para completar la configuración de tu cuenta
+                            </Alert> }                      
+                        </form>
+                    ) :
+                        (<>
+                            <br />
+                            <Skelleton width="100%" height={80} />
+                            <Skelleton width="100%" height={80} />
+                            <Skelleton width="100%" height={80} />
+                            <br />
+                            <Skelleton width="100%" height={70} />
+                            <br />
+
+                        </>)}                        
+                </Paper>          
             </Container>
         </div>
     )
