@@ -119,6 +119,7 @@ export default function login() {
                                 autoComplete="current-password"
                                 onChange={onChange}
                             />
+                            { error && <Alert severity="error">{FIREBASE_ERRORS[error.code] || "Error inesperado"}</Alert>}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -128,8 +129,7 @@ export default function login() {
                                 className={classes.submit}
                             >
                                 Ingresar
-                        </Button>
-                        { error && <Alert severity="error">{FIREBASE_ERRORS[error.code] || "Error inesperado"}</Alert>}   
+                        </Button>                         
                             <Grid container spacing={1}>
                                 <Grid item xs={12} sm={6}>
                                     <Button variant="contained" color="primary" fullWidth className={classes.submit} 
@@ -142,8 +142,8 @@ export default function login() {
                                         onClick={() => dispatch({ type: LOGIN_REQUEST_FACEBOOK, provider: "facebook" })}>
                                         Login Facebook
                                 </Button>
-                                </Grid>
-                            </Grid>
+                                </Grid>                               
+                            </Grid>                             
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="/login" variant="body2" >

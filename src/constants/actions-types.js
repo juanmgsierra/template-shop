@@ -33,7 +33,6 @@ export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 
 export const FIREBASE_ERRORS = {
-  'auth/invalid-email': 'Correo electrónico no valido',
   'auth/user-disabled': 'Correo electrónico dado ha sido deshabilitado',
   'auth/user-not-found': 'No hay ningún usuario que corresponda al correo electrónico dado',
   'auth/wrong-password': 'La contraseña no es válida o es incorrecta',
