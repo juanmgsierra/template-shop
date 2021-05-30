@@ -15,7 +15,8 @@ import {
     REGISTER_SUCCESS,
     REGISTER_ERROR,
     RESET_PASSWORD_REQUEST,
-    RESET_PASSWORD_SUCCESS
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_ERROR
 } from '../constants/actions-types';
 
 
@@ -70,7 +71,7 @@ function* resetPassword(action){
         yield call(resetPass, action.email);
         yield put({type:RESET_PASSWORD_SUCCESS})
     } catch (error) {
-        yield put({type:SESSION_ERROR, error});
+        yield put({type:RESET_PASSWORD_ERROR, error});
     }
 }
 

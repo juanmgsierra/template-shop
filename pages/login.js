@@ -51,7 +51,7 @@ export default function login() {
 
     const [usuario, setUsuario] = useState(initialState)
 
-    const { user, fetching, error } = useSelector(state => state.session);
+    const { user, fetching, error, resetPass } = useSelector(state => state.session);
 
     user.id && router.push("/")
 
@@ -120,6 +120,7 @@ export default function login() {
                                 onChange={onChange}
                             />
                             { error && <Alert severity="error">{FIREBASE_ERRORS[error.code] || "Error inesperado"}</Alert>}
+                            { resetPass && <Alert>Se ha enviado un enlace de cambio de contraseña a su correo</Alert> } 
                             <Button
                                 type="submit"
                                 fullWidth

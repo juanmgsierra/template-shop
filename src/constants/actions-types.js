@@ -31,6 +31,7 @@ export const WATCH_PREDETERMINED_ADDRESS = "WATCH_PREDETERMINED_ADDRESS";
 export const WATCH_DELETE_ADDRESS = "WATCH_DELETE_ADDRESS";
 export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
+export const RESET_PASSWORD_ERROR = "RESET_PASSWORD_ERROR";
 
 export const FIREBASE_ERRORS = {
   'auth/user-disabled': 'Correo electrónico dado ha sido deshabilitado',

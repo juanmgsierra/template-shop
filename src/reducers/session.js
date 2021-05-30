@@ -12,7 +12,8 @@ import {
     REGISTER_SUCCESS,
     REGISTER_ERROR,
     RESET_PASSWORD_REQUEST,
-    RESET_PASSWORD_SUCCESS
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_ERROR,
 } from '../constants/actions-types';
 
 const initialState = {
@@ -23,7 +24,8 @@ const initialState = {
         id: ""
     },
     error: null,
-    fetching: false
+    fetching: false,
+    resetPass: false,
 };
 
 const sessionReducer = (state = initialState, action) => {
@@ -41,13 +43,15 @@ const sessionReducer = (state = initialState, action) => {
         case REGISTER_SUCCESS:
             return { ...state, user: { ...action.data }, fetching: false, error: null };
         case RESET_PASSWORD_SUCCESS:
-            return { ...state, fetching: false, error: null}
+            return { ...state, fetching: false, error: null, resetPass: true}
         case LOGOUT:
             return { ...state, user: initialState.user, fetching: false };
         case LOGIN_ERROR:
         case SESSION_ERROR:
         case REGISTER_ERROR:
             return { ...state, error: action.error, fetching: false };
+        case RESET_PASSWORD_ERROR:
+            return { ...state, error: action.error, fetching: false, resetPass: false };
         case "persist/REHYDRATE":
             return { ...state, error: null, fetching: false };
         default:
